@@ -15,42 +15,29 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         N = Integer.parseInt(br.readLine());
-        meet = new int[N+1][2];
-        dp = new int[N+2];
+        meet = new int[N + 1][2];
+        dp = new int[N + 2]; // dp[N+1] 접근을 위해 +2
 
-        for(int i = 1; i <= N; i++) {
-            dp[i] = 0;
-        }
-
-
-
+        // 입력
         for (int i = 1; i <= N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int t = Integer.parseInt(st.nextToken());
-            int p = Integer.parseInt(st.nextToken());
-            meet[i][0] = t;
-            meet[i][1] = p;
+            meet[i][0] = Integer.parseInt(st.nextToken()); // 상담 기간
+            meet[i][1] = Integer.parseInt(st.nextToken()); // 수익
         }
 
-
+        // DP
         for (int i = N; i >= 1; i--) {
-            // 상담을 안 하는 경우
+            // 오늘 상담 안 하는 경우
             dp[i] = dp[i + 1];
 
-            // 상담을 할 수 있는 경우
-            if (i + meet[i][0] <= N + 1) {
-                dp[i] = Math.max(dp[i], maxMeet(meet, dp, i));
+            // 오늘 상담 하는 경우
+            int next = i + meet[i][0];
+            if (next <= N + 1) {
+                dp[i] = Math.max(dp[i], meet[i][1] + dp[next]);
             }
-
         }
 
+        // 정답
         System.out.println(dp[1]);
-
     }
-
-    static int maxMeet(int[][] meet, int[]dp, int i) {
-        int n = i + meet[i][0];
-        return meet[i][1] + dp[n]; // 그 날의 수익 + 그 다음 바로의 수익
-    }
-
 }
