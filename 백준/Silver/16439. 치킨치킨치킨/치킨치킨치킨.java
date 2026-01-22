@@ -8,8 +8,25 @@ public class Main {
 
     static int N, M;
     static int[][] arr;
+    static int[] pick = new int[3];
     static int max = 0;
 
+    public static void dfs(int depth, int start){
+        if(depth == 3){
+            int sum = 0;
+            for (int i = 0; i < N; i++) {
+                int best = Math.max(arr[i][pick[0]], Math.max(arr[i][pick[1]], arr[i][pick[2]]));
+                sum += best;
+            }
+            max = Math.max(max, sum);
+            return;
+        }
+
+        for (int i = start; i < M; i++) {
+            pick[depth] = i;
+            dfs(depth+1, start+1);
+        }
+    }
 
 
     public static void main(String[] args) throws IOException {
@@ -28,20 +45,8 @@ public class Main {
             }
         }
 
-
-        for (int i = 0; i < M-2; i++) {
-            for (int j = i+1; j < M-1; j++) {
-                for (int k = j+1; k < M; k++) {
-                    int sum = 0;
-                    for (int p = 0; p < N; p++) {
-                        int best = Math.max(arr[p][i], Math.max(arr[p][j], arr[p][k]));
-                        sum += best;
-                    }
-                    max = Math.max(max, sum);
-                }
-            }
-        }
-
+        dfs(0, 0);
+        
         System.out.println(max);
     }
 }
