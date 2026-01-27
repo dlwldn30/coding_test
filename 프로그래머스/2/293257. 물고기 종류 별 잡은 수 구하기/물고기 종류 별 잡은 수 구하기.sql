@@ -1,0 +1,13 @@
+-- 코드를 작성해주세요
+SELECT
+    count(*) as fish_count,
+    fish_name
+FROM
+    fish_info fi
+JOIN
+    fish_name_info fn
+    ON fi.fish_type = fn.fish_type
+GROUP BY
+    fish_name
+ORDER BY
+    fish_count desc
