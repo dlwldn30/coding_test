@@ -25,12 +25,12 @@ public class Main {
 
          for (int i = 0; i < M; i++) {
              st = new StringTokenizer(br.readLine());
-             for (int j = 0; j < N; j++) {}
+             for (int j = 0; j < 3; j++) {}
                 int o = Integer.parseInt(st.nextToken());
                 int l = Integer.parseInt(st.nextToken());
                 int r = Integer.parseInt(st.nextToken());
                 if (o == 1){
-                    light[l-1] = (r == 1) ? true : false;
+                    light[l-1] = (r == 1);
                 }else if (o == 2){
                     for (int k = l-1; k <= r-1; k++) {
                         light[k] = !light[k];
@@ -47,8 +47,11 @@ public class Main {
          }
 
 
-         for (int i = 0; i < N; i++) {
-             System.out.print((light[i] ? 1 : 0) + " ");
-         }
+         StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < N; i++) {
+            sb.append(light[i] ? 1 : 0).append(" ");
+        }
+
+        System.out.println(sb);
     }
 }
