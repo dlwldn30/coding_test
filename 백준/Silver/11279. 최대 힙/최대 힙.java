@@ -8,21 +8,25 @@ import java.util.PriorityQueue;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
         int N = Integer.parseInt(br.readLine());
 
-        while (N-- > 0) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>(Collections.reverseOrder());
+
+        for (int i = 0; i<N; i++){
             int n = Integer.parseInt(br.readLine());
+
             if(n == 0){
-                if(pq.isEmpty()){
+                if(heap.isEmpty()) {
                     System.out.println("0");
-                } else{
-                    System.out.println(pq.poll());
+                    continue;
                 }
+
+                System.out.println(heap.poll());
             }else{
-                pq.add(n);
+                heap.add(n);
             }
         }
+
+
     }
 }
