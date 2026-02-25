@@ -1,23 +1,22 @@
 class Solution {
     public int[] solution(int[] prices) {
         
-        int length = prices.length;
-        int[] sol = new int[length];
+        int[] num = new int[prices.length];
         
-        for (int i = 0; i < length; i++){
-            int count = 0;
-            int price = prices[i];
-            for (int j = i+1; j < length; j++){
-                count++;
-                if(price > prices[j]){
+        for(int i = 0; i < prices.length-1; i++){
+            int n = prices[i];
+            int day = 0;
+            for (int j = i+1; j < prices.length; j++){
+                day++;
+                if(n > prices[j])
                     break;
-                }
-                
-            } 
-            sol[i] = count;
+                    
+            }
+            num[i] = day;
         }
         
+        num[prices.length-1] = 0;
         
-        return sol;
+        return num;
     }
 }
