@@ -5,14 +5,12 @@ class Solution {
     public int solution(int[] nums) {
         Set<Integer> set = new HashSet<>();
         
-        for (int num : nums){
+        for(int num : nums){
             set.add(num);
         }
         
-        int max = nums.length/2;
-        int count = set.size();
+        int n = nums.length/2;
         
-        return Math.min(max, count);
-        
+        return Math.min(n, set.size());
     }
 }
