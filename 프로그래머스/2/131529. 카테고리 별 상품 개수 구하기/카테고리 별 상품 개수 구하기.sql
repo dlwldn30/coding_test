@@ -1,9 +1,4 @@
-SELECT
-    LEFT(PRODUCT_CODE, 2) AS CATEGORY,
-    COUNT(*) AS PRODUCTS
-FROM
-    PRODUCT
-GROUP BY
-    LEFT(PRODUCT_CODE, 2)
-ORDER BY
-    CATEGORY;
+select left(product_code,2) category, count(*) as products
+from product
+group by left(product_code,2)
+order by category;
