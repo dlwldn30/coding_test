@@ -2,12 +2,12 @@ import java.util.*;
 
 class Solution {
     
-    int[] parent;
+   int[] parent;
     
     public int solution(int n, int[][] costs) {
-        
-        int answer = 0;
+     
         parent = new int[n];
+        int answer = 0;
         
         for (int i = 0; i < n; i++){
             parent[i] = i;
@@ -18,31 +18,28 @@ class Solution {
         for(int[] cost : costs){
             int a = cost[0];
             int b = cost[1];
-            int weight = cost[2];
+            int w = cost[2];
             
             if(find(a) != find(b)){
                 union(a,b);
-                answer += weight;
+                answer += w;
             }
         }
-        
         return answer;
     }
     
-    private int find(int x){
-        if(parent[x] == x) return x;
-        return parent[x] = find(parent[x]);
+    private int find(int n){
+        if(parent[n] == n) return n;
+        return parent[n] = find(parent[n]);
     }
     
-    
     private void union(int a, int b){
-        int rootA = find(a);
-        int rootB = find(b);
+        int rootA = parent[a];
+        int rootB = parent[b];
         
         if(rootA != rootB){
-            parent[rootB] = rootA;
+            parent[rootA] = rootB;
         }
-        
     }
     
     
