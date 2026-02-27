@@ -1,10 +1,9 @@
-SELECT
-    ID,
-    CASE NTILE(4) OVER (ORDER BY SIZE_OF_COLONY DESC)
-        WHEN 1 THEN 'CRITICAL'
-        WHEN 2 THEN 'HIGH'
-        WHEN 3 THEN 'MEDIUM'
-        ELSE 'LOW'
-    END AS COLONY_NAME
-FROM ECOLI_DATA
-ORDER BY ID;
+select id,
+    case ntile(4) over(order by size_of_colony desc)
+        when 1 then "CRITICAL"
+        when 2 then "HIGH"
+        when 3 then "MEDIUM"
+        else "LOW"
+    end as colony_name
+from ecoli_data
+order by id asc
