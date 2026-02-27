@@ -1,6 +1,6 @@
--- 코드를 작성해주세요
-select ii.item_id, item_name, rarity 
-from item_info ii
-left join item_tree it
-on it.item_id = ii.item_id
-order by item_id
+select  i.item_id, i.item_name, i.rarity
+from item_tree it
+join item_info ii on ii.item_id = it.parent_item_id
+join item_info i on i.item_id = it.item_id
+where ii.rarity like 'rare'
+order by i.item_id desc
