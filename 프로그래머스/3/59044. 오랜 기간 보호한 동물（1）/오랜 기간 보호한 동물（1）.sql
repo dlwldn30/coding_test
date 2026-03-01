@@ -1,13 +1,5 @@
--- 코드를 입력하세요
-SELECT 
-    I.NAME, 
-    I.DATETIME
-FROM 
-    ANIMAL_INS I
-LEFT JOIN ANIMAL_OUTS O
-    ON I.ANIMAL_ID = O.ANIMAL_ID
-WHERE 
-    O.datetime is null
-ORDER BY
-    I.datetime
+select name, datetime
+from animal_ins
+Where animal_id not in (select animal_id from animal_outs)
+order by datetime asc
 limit 3
