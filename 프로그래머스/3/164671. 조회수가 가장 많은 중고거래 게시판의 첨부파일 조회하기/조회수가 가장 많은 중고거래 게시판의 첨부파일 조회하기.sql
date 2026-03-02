@@ -1,11 +1,5 @@
--- 코드를 입력하세요
-SELECT
-    CONCAT('/home/grep/src/',f.BOARD_ID,'/',f.FILE_ID,f.FILE_NAME,f.FILE_EXT) AS FILE_PATH
-FROM
-    used_goods_board b
-LEFT JOIN 
-    used_goods_file f
-    on b.board_id = f.board_id
-WHERE
-    views = (select max(views) from used_goods_board g)
-
+ select
+    concat('/home/grep/src/', board_id, '/', file_id, file_name, file_ext) as file_path
+from used_goods_file f
+where f.board_id  = (select board_id from used_goods_board order by views desc limit 1)
+order by f.file_id desc
