@@ -1,11 +1,6 @@
-SELECT 
-    writer_id AS user_id,
-    nickname,
-    CONCAT(city, ' ', street_address1, ' ',street_address2) AS '전체주소',
-    CONCAT(SUBSTRING(tlno, 1, 3), '-', SUBSTRING(tlno, 4, 4), '-', SUBSTRING(tlno, 8, 4)) AS '전화번호'
-FROM USED_GOODS_BOARD b
-    INNER JOIN USED_GOODS_USER u
-    ON b.writer_id = u.user_id
-GROUP BY writer_id
-HAVING COUNT(board_id) >= 3
-ORDER BY writer_id DESC
+select user_id, nickname, concat(city, ' ', street_address1, ' ', street_address2) as '전체주소',
+    concat(substring(tlno, 1, 3), '-', substring(tlno, 4, 4), '-', substring(tlno, 8, 4)) as 전화번호
+from used_goods_user ugu
+inner join (select writer_id from used_goods_board group by writer_id having(count(*)) >= 3) b
+    on ugu.user_id = b.writer_id
+order by user_id desc
