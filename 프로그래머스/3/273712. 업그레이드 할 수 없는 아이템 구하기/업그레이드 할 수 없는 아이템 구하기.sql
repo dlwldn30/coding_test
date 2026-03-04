@@ -1,9 +1,5 @@
 -- 코드를 작성해주세요
-SELECT ii.item_id, ii.item_name, ii.rarity
-FROM
-    item_info ii
-    LEFT JOIN item_tree it
-    ON ii.item_id = it.parent_item_id
-WHERE 
-    it.parent_item_id is null
-ORDER BY item_id desc
+SELECT item_id, item_name, rarity
+FROM item_info
+where item_id not in (select parent_item_id as item_id from item_tree where parent_item_id is not null)
+order by item_id desc
