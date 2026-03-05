@@ -2,45 +2,46 @@ import java.util.*;
 
 class Solution {
     
-   int[] parent;
+    int[] parent;
     
     public int solution(int n, int[][] costs) {
-     
+        
+        Arrays.sort(costs, (a, b) -> a[2] - b[2]);
+        
         parent = new int[n];
-        int answer = 0;
+        int cost = 0;
         
-        for (int i = 0; i < n; i++){
-            parent[i] = i;
-        }
+        for(int i = 0; i < n; i++) parent[i] = i;
         
-        Arrays.sort(costs, (a,b) -> a[2] - b[2]);
-        
-        for(int[] cost : costs){
-            int a = cost[0];
-            int b = cost[1];
-            int w = cost[2];
+        for(int i = 0; i < costs.length; i++){
+            int a = costs[i][0];
+            int b = costs[i][1];
+            int c = costs[i][2];
             
-            if(find(a) != find(b)){
-                union(a,b);
-                answer += w;
+            if(union(a, b)){
+                cost += c;
             }
         }
-        return answer;
-    }
-    
-    private int find(int n){
-        if(parent[n] == n) return n;
-        return parent[n] = find(parent[n]);
-    }
-    
-    private void union(int a, int b){
-        int rootA = parent[a];
-        int rootB = parent[b];
         
-        if(rootA != rootB){
-            parent[rootA] = rootB;
-        }
+        return cost;
     }
-    
+            
+        
+        
+        private int find(int n){
+            if(parent[n] == n) return n;
+            return parent[n] = find(parent[n]);
+        }
+        
+        private boolean union(int a, int b){
+            a = find(a);
+            b = find(b);
+            
+            if(a ==b) return false;
+            parent[a] = b;
+            
+            return true;
+            
+        }
     
 }
