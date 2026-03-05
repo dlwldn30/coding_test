@@ -1,31 +1,27 @@
 class Solution {
     
+    boolean[] visited;
     int count = 0;
     
     public int solution(int[] numbers, int target) {
         
-        dfs(numbers, 0, 0, target);
+        visited = new boolean[numbers.length];
+        
+        
+        dfs(numbers, target, 0, 0);
         
         return count;
     }
     
-    private void dfs(int[] numbers, int k, int number, int target){
+    private void dfs(int[] numbers, int target, int cur, int n){
         
-        if(k == numbers.length){
-            if(number == target) 
+        if(n == numbers.length){
+            if(cur == target)
                 count++;
             return;
         }
         
-        
-        int number1 = number + numbers[k];
-        int number2 = number - numbers[k];
-        
-        k++;
-        
-        dfs(numbers, k, number1, target);
-        dfs(numbers, k, number2, target);
-        
-            
+        dfs(numbers, target, cur+numbers[n], n+1);
+        dfs(numbers, target, cur-numbers[n], n+1);
     }
 }
