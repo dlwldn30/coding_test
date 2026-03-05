@@ -1,26 +1,19 @@
 class Solution {
     public int solution(int[] money) {
-        int length = money.length;
-    
+        int n = money.length;
         
+        int max1 = findMax(0, n-1, money);
+        int max2 = findMax(1, n, money);
         
-        int max1 = findMax(money, 0, length-2);
-        int max2 = findMax(money, 1, length-1);
-        
-        int max = Math.max(max1, max2);
-        
-        return max;
+        return Math.max(max1, max2);
     }
     
-    private int findMax(int[] money, int start, int end){
-        
+    private int findMax(int start, int end, int[] money){
         int prev1 = 0;
         int prev2 = 0;
         
-        for (int i = start; i<= end; i++){
-            
-            int cur = Math.max(prev1, prev2+money[i]);
-            
+        for(int i = start; i < end; i++){
+            int cur = Math.max(prev1, money[i] + prev2);
             prev2 = prev1;
             prev1 = cur;
         }
