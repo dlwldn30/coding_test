@@ -8,21 +8,23 @@ class Solution {
     
     public String[] solution(String[][] tickets) {
         
-        Arrays.sort(tickets, (a, b) -> a[1].compareTo(b[1]));
+        Arrays.sort(tickets, (a,b) -> a[1].compareTo(b[1]));
         
         visited = new boolean[tickets.length];
-        answer = new String[tickets.length + 1];
+        answer = new String[tickets.length+1];
+        
         
         dfs("ICN", "ICN", tickets, 0);
         
         return answer;
+        
     }
     
     
-    public void dfs(String start, String path, String[][] tickets, int count){
+    
+    private void dfs(String cur, String path, String[][] tickets, int count){
         
-        if(found)
-            return;
+        if(found) return;
         
         if(count == tickets.length){
             answer = path.split(" ");
@@ -30,16 +32,12 @@ class Solution {
         }
         
         
-        
         for(int i = 0; i < tickets.length; i++){
-            
-            if(tickets[i][0].equals(start) && !visited[i]){
+            if(tickets[i][0].equals(cur) && !visited[i]){
                 visited[i] = true;
                 dfs(tickets[i][1], path + " " + tickets[i][1], tickets, count+1);
                 visited[i] = false;
             }
         }
     }
-    
-    
 }
