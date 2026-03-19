@@ -1,43 +1,48 @@
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.util.*;
+
+
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int H = Integer.parseInt(st.nextToken());
-        int W = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
-        int[] arr = new int[W];
+        int[] blocks = new int[m];
+
         st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < W; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
+        for(int i = 0; i < m; i++) blocks[i] = Integer.parseInt(st.nextToken());
 
-        int result = 0;
+        int count = 0;
 
-        for(int i = 1; i < W - 1; i++) {
-            int left = 0;
-            int right = 0;
+        for (int i = 0; i < m; i++){
+            int leftMax = blocks[i];
+            int rightMax = blocks[i];
 
-            for(int j = 0; j < i; j++) {
-                left = Math.max(left, arr[j]);
+            for(int j = i+1; j < m; j++){
+                if(blocks[j] > rightMax){
+                    rightMax = blocks[j];
+                }
             }
 
-            for(int j = i + 1; j < W; j++) {
-                right = Math.max(right, arr[j]);
+            for(int j = 0; j < i; j++){
+                if(blocks[j] > leftMax){
+                    leftMax = blocks[j];
+                }
             }
 
-            int water = Math.min(left, right) - arr[i];
-            if(water > 0) result += water;
+            int min = Math.min(leftMax, rightMax);
+            int result = Math.abs(min - blocks[i]);
+            count+= result;
         }
 
-        System.out.println(result);
+        System.out.println(count);
     }
 }
