@@ -1,28 +1,30 @@
 
-import java.io.*;
-import java.util.*;
 
+import java.io.*;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        StringBuilder sb = new StringBuilder();
-
         int n = Integer.parseInt(br.readLine());
 
 
+
         for(int i = 0; i < n; i++){
-            int a = Integer.parseInt(br.readLine());
-             int result = 1;
-             result += a/2;
-             for(int j = 1; j <= a/3; j++){
-                 int a1 = a-3*j;
-                 result += a1/2+1;
-             }
-             sb.append(result).append("\n");
+            int num = Integer.parseInt(br.readLine());
+            int result = 0;
+            int n3 = num/3;
+            for(int j = 1; j <= n3; j++){
+                int num3 = num - j*3;
+                result += num3/2+1;
+            }
+            result += num/2;
+            System.out.println(result+1);
         }
-        System.out.println(sb);
+
+
+
     }
 }
