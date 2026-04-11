@@ -26,11 +26,10 @@ public class Main {
                     dp[i] = Math.max(dp[i], dp[j] + arr[i]);
                 }
             }
-        }
-
-        for(int i = 0; i < n; i++) {
             max = Math.max(max, dp[i]);
         }
+
+       
 
         System.out.println(max);
     }
