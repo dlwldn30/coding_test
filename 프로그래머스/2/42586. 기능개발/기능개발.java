@@ -8,17 +8,11 @@ class Solution {
         int[] day = new int[length];
         
         for (int i = 0; i < length; i++){
-            int progress = progresses[i];
-            int speed = speeds[i];
-            for (int j = 1; j <= 100; j++){
-                if(progress + speed * j >= 100){
-                    break;
-                }
-                day[i] = j;
-            }
-            
-            
+            day[i] = (100 - progresses[i] + speeds[i] - 1) / speeds[i];
         }
+            
+            
+        
         
         int num = day[0];
         int count = 1;
