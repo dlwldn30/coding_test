@@ -13,18 +13,18 @@ class Solution {
         while(!dq.isEmpty()){
             int[] n = dq.poll();
             
-            boolean hasHigher = false;
+            boolean higher = false;
             
             for(int[] q : dq){
                 if(n[0] < q[0]){
-                    hasHigher = true;
+                    higher = true;
                     break;
-                }
-            }
+                } 
+             }
             
-            if(hasHigher){
+            if(higher){
                 dq.offer(n);
-            }else{
+            } else{
                 count++;
                 if(n[1] == location)
                     return count;
