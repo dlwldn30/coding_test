@@ -4,27 +4,24 @@ class Solution {
     public int solution(int[] scoville, int K) {
         
         PriorityQueue<Integer> pq = new PriorityQueue<>();
-        int count = 0;
         
         for(int sc : scoville){
-            pq.offer(sc);
+            pq.add(sc);
         }
         
-        while(!pq.isEmpty() && pq.peek() < K){
+        int count = 0;
+        
+        while(pq.peek() < K && !pq.isEmpty()){
             if(pq.size() == 1)
-                break;
-            int first = pq.poll();
-            int second = pq.poll();
-            
-            int food = first + second*2;
+                return -1;
+            int a = pq.poll();
+            int b = pq.poll();
+            int c = a + b * 2;
+            pq.add(c);
             count++;
-            pq.offer(food);
+            
         }
         
-        if(pq.peek() < K)
-            return -1;
-        
-            
         return count;
     }
 }
