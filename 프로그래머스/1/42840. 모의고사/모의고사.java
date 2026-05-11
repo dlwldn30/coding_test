@@ -18,14 +18,14 @@ class Solution {
         }
         
         int max = Math.max(s1, Math.max(s2, s3));
+        
         List<Integer> list = new ArrayList<>();
+        
         if(s1 == max) list.add(1);
         if(s2 == max) list.add(2);
         if(s3 == max) list.add(3);
         
-        return list.stream().mapToInt(i->i).toArray();        
-        
-        
+        return list.stream().mapToInt(i->i).toArray();
         
     }
 }
