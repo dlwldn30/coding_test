@@ -1,14 +1,16 @@
 class Solution {
     public int solution(int[][] triangle) {
-        int length = triangle.length;
+        int[] result = new int[triangle.length];
         
-        int[] result = new int[length];
+        int n = triangle.length;
         
-        for(int i = 0; i < length; i++) result[i] = triangle[length-1][i];
+        for(int i = 0; i < n; i++){
+            result[i] = triangle[n-1][i];
+        }
         
-        for(int i = length-2; i >=0; i--){
+        for(int i = n-2; i >= 0; i--){
             for(int j = 0; j < i+1; j++){
-                result[j] = triangle[i][j]+Math.max(result[j], result[j+1]);
+                result[j] = Math.max(result[j], result[j+1]) + triangle[i][j];
             }
         }
         
