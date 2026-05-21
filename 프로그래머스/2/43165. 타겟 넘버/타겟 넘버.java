@@ -1,27 +1,28 @@
 class Solution {
     
-    boolean[] visited;
-    int count = 0;
+    int answer = 0;
     
     public int solution(int[] numbers, int target) {
+       
+        dfs(numbers, target, 0,0);
         
-        visited = new boolean[numbers.length];
         
         
-        dfs(numbers, target, 0, 0);
+        return answer;
         
-        return count;
     }
     
-    private void dfs(int[] numbers, int target, int cur, int n){
+    private void dfs(int[] numbers, int target, int num, int count){
         
-        if(n == numbers.length){
-            if(cur == target)
-                count++;
+        if(count == numbers.length){
+            if(target == num)
+                answer++;
             return;
         }
         
-        dfs(numbers, target, cur+numbers[n], n+1);
-        dfs(numbers, target, cur-numbers[n], n+1);
+        dfs(numbers, target, num + numbers[count], count+1);
+        dfs(numbers, target, num - numbers[count], count+1);
+        
+        
     }
 }
