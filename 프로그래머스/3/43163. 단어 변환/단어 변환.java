@@ -6,28 +6,24 @@ class Solution {
     
     public int solution(String begin, String target, String[] words) {
         
-        int length = words.length;
-        
-        visited = new boolean[length];
+        visited = new boolean[words.length];
         
         Queue<String> q = new LinkedList<>();
-        Queue<Integer> dep = new LinkedList<>();
-        
-        
-        dep.offer(0);
+        Queue<Integer> cq = new LinkedList<>();
         q.offer(begin);
+       cq.offer(0);
         
         while(!q.isEmpty()){
-            String cur = q.poll();
-            int d = dep.poll();
+            String s = q.poll();
+            int count = cq.poll();
             
-            if(cur.equals(target)) return d;
+            if(s.equals(target)) return count;
             
             for(int i = 0; i < words.length; i++){
-                if(!visited[i] && diffOne(cur, words[i])){
+                if(!visited[i] && diffOne(s, words[i])){
                     visited[i] = true;
                     q.offer(words[i]);
-                    dep.offer(d+1);
+                    cq.offer(count + 1);
                 }
             }
         }
@@ -35,17 +31,15 @@ class Solution {
         
         return 0;
         
-        
-        
-        
     }
     
-    private boolean diffOne(String a, String b){
-        
+    
+    private boolean diffOne(String s1, String s2){
+        int l = s1.length();
         int count = 0;
         
-        for(int i = 0; i < a.length(); i++){
-            if(a.charAt(i) != b.charAt(i)) count++;
+        for(int i = 0; i < l; i++){
+            if(s2.charAt(i) != s1.charAt(i)) count++;
         }
         
         return count == 1;
