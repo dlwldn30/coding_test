@@ -9,28 +9,28 @@ class Solution {
     
     public int solution(int[][] land) {
         
+        int answer = 0;
+        
         int n = land.length;
         int m = land[0].length;
         
-        idMap = new int[n][m];
-        
-        int id = 1;
+        idMap  = new int[n][m];
         
         Map<Integer, Integer> map = new HashMap<>();
+        int id = 1;
         
-        for (int i = 0; i < n; i++){
+        
+        for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
-                if(land[i][j] == 1&& idMap[i][j] == 0){
-                    int count = bfs(land, id, i, j);
+                if(land[i][j] == 1 && idMap[i][j] == 0){
+                    int count = bfs(land, i, j, id);
                     map.put(id, count);
                     id++;
                 }
             }
         }
         
-        int answer = 0;
-        
-        for (int i = 0; i < m; i++){
+        for(int i = 0; i < m; i++){
             Set<Integer> visited = new HashSet<>();
             
             int sum = 0;
@@ -44,44 +44,43 @@ class Solution {
                 }
             }
             
-            answer = Math.max(sum, answer);
-            
+            answer = Math.max(answer, sum);
         }
-        
-        
         
         return answer;
     }
     
-    private int bfs(int[][] land, int id, int i, int j){
+    private int bfs(int[][] land, int i, int j, int id){
+        
+        Queue<int[]> q = new LinkedList<>();
+        
+        q.offer(new int[]{i, j});
+        idMap[i][j] = id;
         
         int n = land.length;
         int m = land[0].length;
         
-        Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{i, j});
-        idMap[i][j] = id;
-        
         int count = 1;
         
         while(!q.isEmpty()){
+            
             int[] cur = q.poll();
-            int cx = cur[0];
-            int cy = cur[1];
+            int x = cur[0];
+            int y = cur[1];
             
             for(int k = 0; k < 4; k++){
-                int nx = cx + dx[k];
-                int ny = cy + dy[k];
+                int nx = x + dx[k];
+                int ny = y + dy[k];
                 
-                if(nx >= 0 && nx < n && ny >= 0 && ny < m){
-                    if(land[nx][ny] == 1&& idMap[nx][ny] == 0){
-                        q.offer(new int[]{nx, ny});
-                        idMap[nx][ny] = id;
-                        count++;
-                    }
+                if(nx >= 0 && nx < n && ny >= 0 && ny < m && land[nx][ny] == 1 && idMap[nx][ny] == 0){
+                    q.offer(new int[]{nx, ny});
+                    idMap[nx][ny] = id;
+                    count++;
                 }
             }
         }
+        
+        
         return count;
     }
 }
