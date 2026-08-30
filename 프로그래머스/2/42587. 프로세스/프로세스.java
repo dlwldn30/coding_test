@@ -4,7 +4,7 @@ class Solution {
     public int solution(int[] priorities, int location) {
         Deque<int[]> dq = new ArrayDeque<>();
         
-        for(int i = 0; i < priorities.length; i++){
+        for (int i = 0; i < priorities.length; i++){
             dq.offer(new int[]{i, priorities[i]});
         }
         
@@ -15,8 +15,8 @@ class Solution {
             
             boolean hasHigher = false;
             
-            for(int[] n : dq){
-                if(d[1] < n[1]){
+            for (int[] n : dq){
+                if(n[1] > d[1]){
                     hasHigher = true;
                     break;
                 }
@@ -26,13 +26,13 @@ class Solution {
                 dq.offer(d);
             }else{
                 count++;
-                if(d[0] == location) return count;
+                if(location == d[0])
+                    return count;
             }
             
             
-            
         }
+        
         return 0;
     }
-
 }
