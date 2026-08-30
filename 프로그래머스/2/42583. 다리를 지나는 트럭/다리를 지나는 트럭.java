@@ -2,29 +2,31 @@ import java.util.*;
 
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
-        Deque<Integer> bridge = new ArrayDeque<>();
-        int time = 0;
-        int sum = 0;
-        int idx = 0;
+        Deque<Integer> dq = new ArrayDeque<>();
         
-        for(int i = 0; i < bridge_length; i++){
-            bridge.offer(0);
-        }
+        for (int i = 0; i < bridge_length; i++)
+            dq.offer(0);
         
-        while(idx < truck_weights.length){
-            time++;
+        int time = 0; // 총 시간
+        int total = 0; // 총 무게
+        int tr = 0; // 트럭
+        
+        //현재 트럭이 개수보다 적을 동안
+        while(tr < truck_weights.length){
             
-            sum -= bridge.poll();
+            total -= dq.poll();
             
-            if(sum + truck_weights[idx] <= weight){
-                bridge.offer(truck_weights[idx]);
-                sum += truck_weights[idx];
-                idx++;
+            if(total + truck_weights[tr] <= weight){
+                dq.offer(truck_weights[tr]);
+                total += truck_weights[tr];
+                tr++;   
             }else{
-                bridge.offer(0);
+                dq.offer(0);
             }
+            
+            time++;
         }
         
-        return time + bridge_length;
+        return time+bridge_length;
     }
 }
