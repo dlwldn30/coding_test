@@ -13,9 +13,13 @@ class Solution {
                 if(stack.isEmpty()) return false;
                 stack.pop();
             }
+            
         }
-        if(!stack.isEmpty()) return false;
         
-        return answer;
+        if(!stack.isEmpty()){
+            return false;
+        }
+        
+        return true;
     }
 }
