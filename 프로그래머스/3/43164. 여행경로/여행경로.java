@@ -3,39 +3,34 @@ import java.util.*;
 class Solution {
     
     boolean[] visited;
-    String[] answer;
     boolean found;
+    String[] result;
     
     public String[] solution(String[][] tickets) {
         
         Arrays.sort(tickets, (a,b) -> a[1].compareTo(b[1]));
         
         visited = new boolean[tickets.length];
-        answer = new String[tickets.length+1];
         
+        dfs(tickets, "ICN", "ICN", 0);
         
-        dfs("ICN", "ICN", tickets, 0);
-        
-        return answer;
-        
+        return result;
     }
     
-    
-    
-    private void dfs(String cur, String path, String[][] tickets, int count){
+    private void dfs(String[][] tickets, String s, String answer, int count){
         
         if(found) return;
         
         if(count == tickets.length){
-            answer = path.split(" ");
             found = true;
+            result = answer.split(" ");
+            return;
         }
         
-        
         for(int i = 0; i < tickets.length; i++){
-            if(tickets[i][0].equals(cur) && !visited[i]){
+            if(!visited[i] && tickets[i][0].equals(s)){
                 visited[i] = true;
-                dfs(tickets[i][1], path + " " + tickets[i][1], tickets, count+1);
+                dfs(tickets, tickets[i][1], answer + " " + tickets[i][1], count+1);
                 visited[i] = false;
             }
         }
