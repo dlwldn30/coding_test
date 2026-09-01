@@ -4,6 +4,7 @@ class Solution {
     
     boolean[] visited;
     int answer = 0;
+    boolean found;
     
     public int solution(String begin, String target, String[] words) {
         
@@ -18,8 +19,11 @@ class Solution {
     
     private void dfs(String begin, String target, int count, String[] words){
         
+        if(found) return;
+        
         if(target.equals(begin)){
             answer = count;
+            found = true;
             return;
         }
         
