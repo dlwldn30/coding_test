@@ -3,45 +3,45 @@ import java.util.*;
 class Solution {
     
     boolean[] visited;
+    int answer = 0;
     
     public int solution(String begin, String target, String[] words) {
         
         visited = new boolean[words.length];
         
-        Queue<String> q = new LinkedList<>();
-        Queue<Integer> cq = new LinkedList<>();
-        q.offer(begin);
-       cq.offer(0);
         
-        while(!q.isEmpty()){
-            String s = q.poll();
-            int count = cq.poll();
-            
-            if(s.equals(target)) return count;
-            
-            for(int i = 0; i < words.length; i++){
-                if(!visited[i] && diffOne(s, words[i])){
-                    visited[i] = true;
-                    q.offer(words[i]);
-                    cq.offer(count + 1);
-                }
+        
+        dfs(begin, target, 0, words);
+        
+        return answer;
+    }
+    
+    private void dfs(String begin, String target, int count, String[] words){
+        
+        if(target.equals(begin)){
+            answer = count;
+            return;
+        }
+        
+        for(int i = 0; i < words.length; i++){
+            if(!visited[i] && diffOne(begin, words[i])){
+                visited[i] = true;
+                dfs(words[i], target, count+1, words);
+                visited[i] = false;
             }
         }
         
         
-        return 0;
-        
     }
     
-    
     private boolean diffOne(String s1, String s2){
-        int l = s1.length();
-        int count = 0;
+        int n = s1.length();
+        int c = 0;
         
-        for(int i = 0; i < l; i++){
-            if(s2.charAt(i) != s1.charAt(i)) count++;
+        for(int i = 0; i < n; i++){
+            if(s1.charAt(i) != s2.charAt(i)) c++;
         }
         
-        return count == 1;
+        return c == 1;
     }
 }
