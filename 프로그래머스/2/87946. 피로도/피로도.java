@@ -1,5 +1,3 @@
-import java.util.*;
-
 class Solution {
     
     int max = 0;
@@ -10,17 +8,18 @@ class Solution {
         
         dfs(dungeons, visited, k, 0);
         
+        
         return max;
     }
     
-    private void dfs(int[][] dungeons, boolean[] visited, int k, int num){
+    private void dfs(int[][] dungeons, boolean[] visited, int k, int s){
         
-        if(num > max) max = num;
+        if(max < s) max = s;
         
-        for (int i = 0; i < dungeons.length; i++){
-            if(!visited[i] && k >= dungeons[i][0]){
+        for(int i = 0; i < dungeons.length; i++){
+            if(!visited[i] && k-dungeons[i][0] >= 0){
                 visited[i] = true;
-                dfs(dungeons, visited, k-dungeons[i][1], num+1);
+                dfs(dungeons, visited, k-dungeons[i][1], s+1);
                 visited[i] = false;
             }
         }
