@@ -1,67 +1,64 @@
 import java.util.*;
 
 class Solution {
+    
+    String[][] priority = {
+            {"+", "-", "*"}, 
+            {"+", "*", "-"},
+            {"*", "+", "-"},
+            {"*", "-", "+"},
+            {"-", "*", "+"},
+            {"-", "+", "*"}
+        };
+    
     public long solution(String expression) {
         
-        String[][] priority = {
-            {"+", "-", "*"},
-            {"+", "*", "-"},
-            {"-", "+", "*"},
-            {"-", "*", "+"},
-            {"*", "+", "-"},
-            {"*", "-", "+"}
-        };
-        
-        List<Long> number = new ArrayList<>();
         List<String> op = new ArrayList<>();
-        
+        List<Long> numbers = new ArrayList<>();
+        long max = 0;
         String num = "";
         
         for(int i = 0; i < expression.length(); i++){
-            char c = expression.charAt(i);
             
+            
+            
+            char c = expression.charAt(i);
             if(Character.isDigit(c)){
-                num += c;
+                num+=c;
             }else{
                 op.add(String.valueOf(c));
-                number.add(Long.parseLong(num));
+                numbers.add(Long.parseLong(num));
                 num = "";
             }
         }
         
-        number.add(Long.parseLong(num));
-        
-        long max = 0;
+        numbers.add(Long.parseLong(num));
         
         for(int i = 0; i < 6; i++){
             
-            List<Long> copyLong = new ArrayList<>(number);
+            List<Long> copyNumbers = new ArrayList<>(numbers);
             List<String> copyOp = new ArrayList<>(op);
             
             for(int j = 0; j < 3; j++){
-                
-                String target = priority[i][j];
+                String s = priority[i][j];
                 
                 for(int k = 0; k < copyOp.size();){
-                    
-                    if(copyOp.get(k).equals(target)){
-                        
-                        long a = copyLong.get(k);
-                        long b = copyLong.get(k+1);
+                    if(copyOp.get(k).equals(s)){
+                        long n1 = copyNumbers.get(k);
+                        long n2 = copyNumbers.get(k+1);
                         
                         long result = 0;
                         
-                        if(target.equals("*")){
-                            result = a*b;
-                        }else if(target.equals("+")){
-                            result = a+b;
+                        if(s.equals("+")){
+                            result = n1 + n2;
+                        }else if(s.equals("*")){
+                            result = n1*n2;
                         }else{
-                            result = a-b;
+                            result = n1-n2;
                         }
                         
-                        
-                        copyLong.set(k, result);
-                        copyLong.remove(k+1);
+                        copyNumbers.set(k, result);
+                        copyNumbers.remove(k+1);
                         copyOp.remove(k);
                     }
                     else{
@@ -69,13 +66,10 @@ class Solution {
                     }
                 }
             }
-            
-            long answer = Math.abs(copyLong.get(0));
+            long answer = Math.abs(copyNumbers.get(0));
             max = Math.max(max, answer);
         }
-        
-        
+            
         return max;
     }
-                       
 }
