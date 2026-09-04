@@ -3,74 +3,60 @@ import java.util.*;
 class Solution {
     public int solution(int[][] points, int[][] routes) {
         
+        // 각 routes 별로 어디서 어디로 가는지 좌표의 변화를 기록
         Map<Integer, List<int[]>> map = new HashMap<>();
-        int answer = 0;
         
         for(int i = 0; i < routes.length; i++){
             
-            // 원본 points 변경 방지
-            int[] start = points[routes[i][0] - 1].clone();
-            
-            map.put(i, new ArrayList<>());
-            map.get(i).add(new int[]{start[0], start[1]});
+            int[] s = points[routes[i][0] - 1].clone();
+            map.putIfAbsent(i, new ArrayList<>());
+            map.get(i).add(new int[]{s[0], s[1]});
             
             for(int j = 1; j < routes[i].length; j++){
-                int[] des = points[routes[i][j] - 1];
+                int[] d = points[routes[i][j] - 1];
                 
-                while(start[0] != des[0]){
-                    if(start[0] < des[0]){
-                        start[0]++;
-                    }else{
-                        start[0]--;
-                    }
+                while(s[0] != d[0]){
+                    if(s[0] < d[0]) s[0]++;
+                    else s[0]--;
                     
-                    map.get(i).add(new int[]{start[0], start[1]});
+                    map.get(i).add(new int[]{s[0], s[1]});
                 }
                 
-                while(start[1] != des[1]){
-                    if(start[1] < des[1]){
-                        start[1]++;
-                    }else{
-                        start[1]--;
-                    }
+                while(s[1] != d[1]){
+                    if(s[1] < d[1]) s[1]++;
+                    else s[1]--;
                     
-                    map.get(i).add(new int[]{start[0], start[1]});
+                    map.get(i).add(new int[]{s[0], s[1]});
                 }
             }
         }
         
-        int max = 0;
+        int maxLength = 0;
         
         for(int i : map.keySet()){
-            max = Math.max(map.get(i).size(), max);
+            maxLength = Math.max(map.get(i).size(), maxLength);
         }
         
-        for(int i = 0; i < max; i++){
+        int answer = 0;
+        
+        for(int i = 0; i < maxLength; i++){
+            Map<String, Integer> count = new HashMap<>();
             
-            int count = 0;
-            
-            Map<String, Integer> check = new HashMap<>();
-            
-            for(int robot : map.keySet()){
-                List<int[]> path = map.get(robot);
+            for(int j : map.keySet()){
+                List<int[]> po = map.get(j);
                 
-                // 여기 >=
-                if(i >= path.size()) continue;
+                if(po.size() <= i) continue;
                 
-                int[] pos = path.get(i);
+                int[] cur = po.get(i);
+                String p = cur[0] + " " + cur[1];
                 
-                String key = pos[0] + "," + pos[1];
-                
-                check.put(key, check.getOrDefault(key, 0) + 1);
+                count.put(p, count.getOrDefault(p, 0) + 1);
             }
-            
-            for(int n : check.values()){
+            for(int n : count.values()){
                 if(n >= 2){
-                    count++;
+                    answer++;
                 }
             }
-            
-            answer += count;
         }
         
         return answer;
