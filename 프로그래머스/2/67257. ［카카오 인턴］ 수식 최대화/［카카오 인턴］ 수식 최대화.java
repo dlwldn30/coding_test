@@ -3,73 +3,81 @@ import java.util.*;
 class Solution {
     
     String[][] priority = {
-            {"+", "-", "*"}, 
-            {"+", "*", "-"},
-            {"*", "+", "-"},
-            {"*", "-", "+"},
-            {"-", "*", "+"},
-            {"-", "+", "*"}
-        };
+        {"+", "-", "*"}, 
+        {"+", "*", "-"},
+        {"*", "+", "-"},
+        {"*", "-", "+"},
+        {"-", "*", "+"},
+        {"-", "+", "*"}
+    };
     
     public long solution(String expression) {
         
-        List<String> op = new ArrayList<>();
-        List<Long> numbers = new ArrayList<>();
-        long max = 0;
+        int n = expression.length();
         String num = "";
+        long answer = 0;
         
-        for(int i = 0; i < expression.length(); i++){
-            
-            
-            
+        List<String> op = new ArrayList<>();
+        List<Long> number = new ArrayList<>();
+        
+        // 문자열 파싱
+        for(int i = 0; i < n; i++){
             char c = expression.charAt(i);
+            
             if(Character.isDigit(c)){
-                num+=c;
+                num += c;
             }else{
                 op.add(String.valueOf(c));
-                numbers.add(Long.parseLong(num));
+                number.add(Long.parseLong(num));
                 num = "";
             }
         }
         
-        numbers.add(Long.parseLong(num));
+        // 마지막 숫자
+        number.add(Long.parseLong(num));
         
+        // 6가지 우선순위
         for(int i = 0; i < 6; i++){
             
-            List<Long> copyNumbers = new ArrayList<>(numbers);
+            // 원본을 훼손하면 다음 우선순위를 계산할 수 없으므로 복사
             List<String> copyOp = new ArrayList<>(op);
+            List<Long> numCopy = new ArrayList<>(number);
             
             for(int j = 0; j < 3; j++){
-                String s = priority[i][j];
                 
                 for(int k = 0; k < copyOp.size();){
-                    if(copyOp.get(k).equals(s)){
-                        long n1 = copyNumbers.get(k);
-                        long n2 = copyNumbers.get(k+1);
+                    
+                    if(copyOp.get(k).equals(priority[i][j])){
                         
-                        long result = 0;
+                        long a = numCopy.get(k);
+                        long b = numCopy.get(k + 1);
+                        long sum;
                         
-                        if(s.equals("+")){
-                            result = n1 + n2;
-                        }else if(s.equals("*")){
-                            result = n1*n2;
+                        if(priority[i][j].equals("+")){
+                            sum = a + b;
+                        }else if(priority[i][j].equals("-")){
+                            sum = a - b;
                         }else{
-                            result = n1-n2;
+                            sum = a * b;
                         }
                         
-                        copyNumbers.set(k, result);
-                        copyNumbers.remove(k+1);
+                        // a op b → 계산 결과 하나로 합침
                         copyOp.remove(k);
-                    }
-                    else{
+                        numCopy.set(k, sum);
+                        numCopy.remove(k + 1);
+                        
+                        // k++ 하지 않음
+                        // remove로 다음 연산자가 현재 k 자리로 당겨졌기 때문
+                        
+                    }else{
                         k++;
                     }
                 }
             }
-            long answer = Math.abs(copyNumbers.get(0));
-            max = Math.max(max, answer);
-        }
             
-        return max;
+            answer = Math.max(answer, Math.abs(numCopy.get(0)));
+        }
+        
+        return answer;
     }
 }
