@@ -9,46 +9,42 @@ class Solution {
     
     public int solution(int[][] maps) {
         
-        int[][] routes = new int[maps.length][maps[0].length];
-        visited = new boolean[maps.length][maps[0].length];
-        
         int n = maps.length;
         int m = maps[0].length;
         
+        int[][] route = new int[n][m];
+        visited = new boolean[n][m];
         
-        
-        for(int i = 0; i < maps.length; i++){
-            for(int j = 0; j < maps[0].length; j++){
-                if(maps[i][j] == 0){
-                    routes[i][j] = -1;
-                }
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(maps[i][j] == 0)
+                    route[i][j] = -1;
             }
         }
-        
         
         Queue<int[]> q = new ArrayDeque<>();
         q.offer(new int[]{0,0});
         visited[0][0] = true;
-        routes[0][0] = 1;
+        route[0][0] = 1;
         
         while(!q.isEmpty()){
             int[] cur = q.poll();
             int x = cur[0];
             int y = cur[1];
             
-            if(x == n-1 && y == m-1) return routes[x][y];
+            if(x == n-1 && y == m-1) return route[x][y];
             
             for(int i = 0; i < 4; i++){
                 int nx = x + dx[i];
                 int ny = y + dy[i];
                 
-                if(nx >= 0 && ny >= 0 && nx < n && ny < m){
-                    if(!visited[nx][ny] && routes[nx][ny] != -1){
-                        q.offer(new int[]{nx, ny});
-                        routes[nx][ny] = routes[x][y] + 1;
-                        visited[nx][ny] = true;
-                    }
-                }
+                if(nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
+                if(route[nx][ny] == -1) continue;
+                if(visited[nx][ny]) continue;
+                
+                route[nx][ny] = route[x][y] + 1;
+                visited[nx][ny] = true;
+                q.offer(new int[]{nx, ny});
             }
         }
         
