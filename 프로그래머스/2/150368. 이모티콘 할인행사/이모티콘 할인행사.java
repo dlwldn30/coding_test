@@ -3,52 +3,52 @@ import java.util.*;
 class Solution {
     
     int[] rate = {10, 20, 30, 40};
-    int[] answer = new int[2];
-    
+    int[] answer = {0,0};
     
     public int[] solution(int[][] users, int[] emoticons) {
-        // 할인율부터 정하기
-        
+         
+        // 각 이모티콘에 몇퍼센트를 할건지 정해야 함.
         int[] discount = new int[emoticons.length];
-        
-        dfs(users, emoticons, discount, 0);
-        
-        return answer;
+        dfs(users, emoticons, 0, discount);
+            
+            return answer;
     }
     
-    
-    private void dfs(int[][] users, int[] emoticons, int[] discount, int n){
+    private void dfs(int[][] users, int[] emoticons, int depth, int[] discount){
         
-        if(n == discount.length){
-            int sub = 0;
-            int buy = 0;
+        if(depth == emoticons.length){
             
-            for(int i = 0; i < users.length; i++){
+            int sub = 0;
+            int money = 0;
+            
+            for(int i = 0; i < users.length; i++){ // 사람이 순회
                 int sum = 0;
-                for(int j = 0; j < emoticons.length; j++){
-                    if(discount[j] < users[i][0]) continue;
+                
+                for(int j = 0; j < discount.length; j++){
+                    if(users[i][0] > discount[j]) continue;
                     
-                    int money = emoticons[j] * (100-discount[j])/100;
-                    sum += money;
+                    sum += emoticons[j] * (100-discount[j]) / 100;
                 }
-                if(sum >= users[i][1])
-                    sub++;
-                else buy += sum;
+                if(sum >= users[i][1]) sub++;
+                else money += sum;
             }
+            
             
             if(sub > answer[0]){
                 answer[0] = sub;
-                answer[1] = buy;
-            }else if(sub == answer[0] && buy > answer[1]){
-                answer[1] = buy;
+                answer[1] = money;
+            }else if(sub == answer[0] && money > answer[1]){
+                answer[0] = sub;
+                answer[1] = money;
             }
             
             return;
-        }        
+        }
+        
         
         for(int i = 0; i < 4; i++){
-            discount[n] = rate[i];
-            dfs(users, emoticons, discount, n+1);
+            discount[depth] = rate[i];
+            dfs(users, emoticons, depth+1, discount);
         }
     }
 }
