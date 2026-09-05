@@ -1,36 +1,33 @@
 class Solution {
     public int solution(String name) {
         
-        int n = name.length();
         int answer = 0;
-        int max = 20;
+        int l = name.length();
         
-        for(int i = 0; i < n; i++){
+        for(int i = 0;  i < name.length(); i++){
             char c = name.charAt(i);
             
-            int a1 = c - 'A';
-            int a2 = 'Z'- c + 1;
+            int a = c - 'A';
+            int b = 'Z'- c + 1;
             
-            answer += Math.min(a1, a2);
+            answer += Math.min(a, b);
         }
         
-        if(n == 1)
-            return answer;
+        int min = name.length()-1;
         
-        for(int i = 0; i < n-1; i++){
-            int next = i+1;
+        for(int i = 0; i < name.length()-1; i++){
+            int next = i + 1;
             
-            while(next < n && name.charAt(next) == 'A'){
+            while(next <= name.length()-1 && name.charAt(next) == 'A')
                 next++;
-            }
             
-            int s1 = i*2 + n-next;
-            int s2 = 2*(n-next) + i;
+            int n1 = i*2 + l-next;
+            int n2 = (l-next) * 2 + i;
             
-            int min = Math.min(s1, s2);
-            max = Math.min(min, max);   
+            min = Math.min(min, Math.min(n1, n2));
         }
         
-        return answer + max;
+        
+        return answer + min;
     }
 }
