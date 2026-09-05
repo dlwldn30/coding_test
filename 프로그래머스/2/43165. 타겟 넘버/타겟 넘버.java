@@ -1,25 +1,24 @@
 class Solution {
     
-    int count = 0;
+    int answer = 0;
     
     public int solution(int[] numbers, int target) {
         
-        int n = 0;
+        dfs(numbers, target, 0, 0);
         
-        dfs(numbers, target, 0, n);
-        
-        return count;
+        return answer;
     }
     
-    private void dfs(int[] numbers, int target, int num, int s){
+    public void dfs(int[] numbers, int target, int start, int count){
         
-        if(s == numbers.length){
-            if(num == target)
-                count++;
+        if(count == numbers.length){
+            if(target == start)
+                answer++;
             return;
         }
         
-        dfs(numbers, target, num - numbers[s], s+1);
-        dfs(numbers, target, num + numbers[s], s+1);
+        
+        dfs(numbers, target, start + numbers[count], count+1);
+        dfs(numbers, target, start - numbers[count], count+1);
     }
 }
