@@ -1,35 +1,38 @@
+
 import java.util.*;
 
 class Solution {
     
-    boolean[][] visited;
-    int[] dx = {-1, 1, 0, 0};
+    int[] dx = {1, -1, 0 ,0};
     int[] dy = {0, 0, 1, -1};
+    boolean[][] visited;
     
     public int solution(String[] board) {
         
+        int n = board.length;
+        int m = board[0].length();
+        
         int[][] pos = new int[2][2];
-        visited = new boolean[board.length][board[0].length()];
+        visited = new boolean[n][m];
         
-        
-        // 위치 저장
-        for(int i = 0; i < board.length; i++){
-            for(int j = 0; j < board[0].length(); j++){
+        for(int i = 0 ; i < n; i++){
+            for(int j = 0; j < m; j++){
                 if(board[i].charAt(j) == 'R'){
                     pos[0][0] = i;
                     pos[0][1] = j;
-                } else if(board[i].charAt(j) == 'G'){
+                }
+                if(board[i].charAt(j) == 'G'){
                     pos[1][0] = i;
                     pos[1][1] = j;
                 }
             }
         }
         
-        return bfs(board, pos);
+        
+        return bfs(board, pos, n, m);
     }
     
-    
-    private int bfs(String[] board, int[][] pos){
+    private int bfs(String[] board, int[][] pos, int n, int m){
         
         Queue<int[]> q = new LinkedList<>();
         
@@ -41,10 +44,9 @@ class Solution {
             
             int x = cur[0];
             int y = cur[1];
-            int w = cur[2];
+            int d = cur[2];
             
-            if(x == pos[1][0] && y == pos[1][1])
-                return w;
+            if(x == pos[1][0] && y == pos[1][1]) return d;
             
             for(int i = 0; i < 4; i++){
                 int nx = x;
@@ -53,25 +55,22 @@ class Solution {
                 while(true){
                     int tx = nx + dx[i];
                     int ty = ny + dy[i];
-                    
-                    if(tx < 0 || tx >= board.length || ty < 0 || ty >= board[i].length())
+                    if(tx < 0 || ty < 0 || tx >= n || ty >= m)
                         break;
-                    
-                    if(board[tx].charAt(ty) == 'D') break;
+                    if(board[tx].charAt(ty) == 'D')
+                        break;
                     
                     nx = tx;
                     ny = ty;
                 }
-                if(!visited[nx][ny]){
-                visited[nx][ny] = true;
-                q.offer(new int[]{nx, ny, w+1});
-                }
                 
+                if(!visited[nx][ny]){
+                    q.add(new int[]{nx, ny, d+1});
+                    visited[nx][ny] = true;
+                }
             }
-        }
+        } 
         
-        
-
         return -1;
     }
 }
