@@ -2,17 +2,20 @@ import java.util.*;
 
 class Solution {
     
+    boolean[] visited;
     List<List<Integer>> list = new ArrayList<>();
+    int[] result;
+    int answer = 0;
     
     public int solution(int n, int[][] edge) {
         
+        for(int i = 0; i <= n; i++) list.add(new ArrayList<>());
+        visited = new boolean[n+1];
+        result = new int[n+1];
+        int max = 0;
         
         
-        for(int i = 0; i <= n; i++){
-            list.add(new ArrayList<>());
-        }
-        
-        for(int i = 0; i < edge.length; i++){
+        for(int i = 0; i< edge.length; i++){
             int a = edge[i][0];
             int b = edge[i][1];
             
@@ -20,40 +23,30 @@ class Solution {
             list.get(b).add(a);
         }
         
-        int max = 0;
-        int count = 0;
-        
-        
-        boolean[] visited = new boolean[n+1];
-        Queue<Integer> q = new LinkedList<>();
-        
+        Queue<Integer> q = new ArrayDeque<>();
         visited[1] = true;
         q.add(1);
-        int[] dist = new int[n+1];
-        dist[1] = 0;
-        
+        result[1] = 1;
         
         while(!q.isEmpty()){
-            int cur = q.poll();
+            int n1 = q.poll();
+            int w = result[n1];
             
-            for(int l : list.get(cur)){
-                if(!visited[l]){
-                    visited[l] = true;
-                    dist[l] = dist[cur] + 1;
-                    q.add(l);
+            if(max < w) max = w;
+            
+            for(int m : list.get(n1)){
+                if(!visited[m]){
+                    visited[m] = true;
+                    q.add(m);
+                    result[m] = w+1;
                 }
             }
         }
         
-        for(int i = 1; i <=n; i++){
-            max = Math.max(max, dist[i]);
+        for(int i = 1; i <=n ; i++){
+            if(result[i] == max) answer++;
         }
         
-        for(int i = 1; i <= n; i++){
-            if(dist[i] == max) count++;
-        }
-        
-        
-        return count;
+        return answer;
     }
 }
