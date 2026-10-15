@@ -1,3 +1,5 @@
+import java.util.*;
+
 class Solution {
     public boolean solution(int[][] key, int[][] lock) {
         int n = lock.length;
@@ -10,8 +12,8 @@ class Solution {
             }
         }
         
-        for(int k = 0; k < 4; k++){
-            for(int i = 0; i < 2 * n; i++){
+        for(int k = 0 ; k < 4; k++){
+            for(int i = 0; i < 2*n; i++){
                 for(int j = 0; j < 2*n; j++){
                     for(int x = 0; x < m; x++){
                         for(int y = 0; y < m; y++){
@@ -27,20 +29,24 @@ class Solution {
                             map[i+x][j+y] -= key[x][y];
                         }
                     }
+                
                 }
+                
             }
-            key = rotate(key, m);
             
+            key = rotate(key, m);
         }
         
         return false;
     }
     
     private boolean check(int[][] map, int n){
+        
         for(int i = n; i < 2*n; i++){
             for(int j = n; j < 2*n; j++){
-                if(map[i][j] != 1)
+                if(map[i][j] != 1){
                     return false;
+                }
             }
         }
         
@@ -48,13 +54,14 @@ class Solution {
     }
     
     private int[][] rotate(int[][] key, int m){
-        int[][] r = new int[m][m];
+        
+        int[][] result = new int[m][m];
         for(int i = 0; i < m; i++){
             for(int j = 0; j < m; j++){
-                r[i][j] = key[j][m-1-i];
+                result[i][j] = key[j][m-i-1];
             }
         }
         
-        return r;
+        return result;
     }
 }
