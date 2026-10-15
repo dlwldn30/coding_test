@@ -1,16 +1,20 @@
 class Solution {
     public int solution(int n, int[][] results) {
-        boolean[][] win = new boolean[n+1][n+1];
         
-        for(int[] r: results){
-            win[r[0]][r[1]] = true;
+        boolean[][] match = new boolean[n+1][n+1];
+        
+        for(int i = 0; i < results.length; i++){
+            int a = results[i][0];
+            int b = results[i][1];
+            
+            match[a][b] = true;
         }
         
-        for(int i = 1; i <= n; i++){
-            for(int j = 1; j <= n; j++){
-                for(int k = 1; k <= n; k++){
-                    if(win[j][i] && win[i][k])
-                        win[j][k] = true;
+        for(int k = 1; k <= n; k++){
+            for(int i = 1; i <= n; i++){
+                for(int j = 1; j <= n; j++){
+                    if(match[i][k] && match[k][j])
+                        match[i][j] = true;
                 }
             }
         }
@@ -18,15 +22,16 @@ class Solution {
         int answer = 0;
         
         for(int i = 1; i <= n; i++){
-            int count = 0;
-            
-            for(int j = 1; j<= n; j++){
-                if(win[i][j] || win[j][i]) count++;
+            boolean b = true;
+            for(int j = 1; j <= n; j++){
+                if(i == j) continue;
+                if(!match[i][j] && !match[j][i]){
+                    b = false;
+                    break;
+                }
             }
-            
-            if(count == n-1) answer ++;
+            if(b) answer++;
         }
-        
         return answer;
     }
 }
