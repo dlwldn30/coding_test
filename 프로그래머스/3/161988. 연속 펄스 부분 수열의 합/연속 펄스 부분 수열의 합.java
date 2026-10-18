@@ -18,22 +18,19 @@ class Solution {
             }
         }
         
-        return Math.max(kadane(arr1), kadane(arr2));
-
+        return Math.max(findMax(arr1, n), findMax(arr2, n));
     }
     
-    private long kadane(long[] arr){
+    private long findMax(long[] arr, int n){
         
-        long max = arr[0];
-        long cur = arr[0];
+        long max = 0;
+        long result = 0;
         
-        for(int i = 1; i < arr.length; i++){
-            
-            cur = Math.max(arr[i], cur + arr[i]);
-            
-            max = Math.max(cur, max);
+        for(int i = 0; i < n; i++){
+            max = Math.max(max+arr[i], arr[i]);
+            result = Math.max(result, max);
         }
         
-        return max;
+        return result;
     }
 }
