@@ -4,35 +4,35 @@ class Solution {
     public int solution(int[] priorities, int location) {
         Deque<int[]> dq = new ArrayDeque<>();
         
-        for (int i = 0; i < priorities.length; i++){
+        for(int i = 0; i < priorities.length; i++){
             dq.offer(new int[]{i, priorities[i]});
         }
         
-        int count = 0;
+        int count = 1;
         
         while(!dq.isEmpty()){
-            int[] d = dq.poll();
-            
             boolean hasHigher = false;
+            int[] n = dq.pollFirst();
             
-            for (int[] n : dq){
-                if(n[1] > d[1]){
+            for(int[] d : dq){
+                if(n[1] < d[1]){
                     hasHigher = true;
                     break;
                 }
             }
             
             if(hasHigher){
-                dq.offer(d);
+                dq.offerLast(n);
             }else{
-                count++;
-                if(location == d[0])
+                if(location == n[0])
                     return count;
+                else{
+                    count++;
+                }
             }
-            
-            
         }
         
-        return 0;
+        
+        return count;
     }
 }
