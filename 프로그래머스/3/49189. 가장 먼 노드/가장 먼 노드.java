@@ -2,43 +2,46 @@ import java.util.*;
 
 class Solution {
     
-    boolean[] visited;
-    List<List<Integer>> list = new ArrayList<>();
-    int[] result;
-    int answer = 0;
+    List<Integer>[] graph;
     
     public int solution(int n, int[][] edge) {
         
-        for(int i = 0; i <= n; i++) list.add(new ArrayList<>());
-        visited = new boolean[n+1];
-        result = new int[n+1];
+        boolean[] visited = new boolean[n+1];
+        int answer = 0;
+        
+        graph = new ArrayList[n + 1];
+        
+        for (int i = 1; i <= n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        
+        int[] result = new int[n+1];
         int max = 0;
         
-        
-        for(int i = 0; i< edge.length; i++){
+        for(int i = 0; i < edge.length; i++){
             int a = edge[i][0];
             int b = edge[i][1];
             
-            list.get(a).add(b);
-            list.get(b).add(a);
+            graph[a].add(b);
+            graph[b].add(a);
         }
         
-        Queue<Integer> q = new ArrayDeque<>();
+        Deque<Integer> dq = new ArrayDeque<>();
+        dq.offer(1);
         visited[1] = true;
-        q.add(1);
-        result[1] = 1;
         
-        while(!q.isEmpty()){
-            int n1 = q.poll();
-            int w = result[n1];
+        while(!dq.isEmpty()){
+            int c = dq.poll();
+            int c1 = result[c];
             
-            if(max < w) max = w;
+            max = Math.max(c1, max);
             
-            for(int m : list.get(n1)){
-                if(!visited[m]){
-                    visited[m] = true;
-                    q.add(m);
-                    result[m] = w+1;
+            
+            for(int next : graph[c]){
+                if(!visited[next]){
+                    visited[next] = true;
+                    result[next] = c1 + 1;
+                    dq.offer(next);
                 }
             }
         }
