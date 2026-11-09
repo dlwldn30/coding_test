@@ -2,85 +2,72 @@ import java.util.*;
 
 class Solution {
     
-    int[] dx = {-1, 1, 0, 0};
-    int[] dy = {0, 0, 1, -1};
-    int[][] idMap;
+    boolean[][] visited;
+    int[] answer;
+
     
+    int[] dx = {1, -1, 0 ,0};
+    int[] dy = {0, 0, 1, -1};
     
     public int solution(int[][] land) {
-        
-        int answer = 0;
-        
+        // 먼저 석유량을 알아야 함.
+        // 
         int n = land.length;
         int m = land[0].length;
         
-        idMap  = new int[n][m];
-        
-        Map<Integer, Integer> map = new HashMap<>();
-        int id = 1;
+        answer = new int[m];
+        visited = new boolean[n][m];
         
         
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
-                if(land[i][j] == 1 && idMap[i][j] == 0){
-                    int count = bfs(land, i, j, id);
-                    map.put(id, count);
-                    id++;
+                if(!visited[i][j] && land[i][j] == 1){
+                    bfs(land, i, j);
                 }
             }
         }
+        
+        int max = 0;
         
         for(int i = 0; i < m; i++){
-            Set<Integer> visited = new HashSet<>();
-            
-            int sum = 0;
-            
-            for(int j = 0; j < n; j++){
-                int curId = idMap[j][i];
-                
-                if(curId > 0 && !visited.contains(curId)){
-                    visited.add(curId);
-                    sum += map.get(curId);
-                }
-            }
-            
-            answer = Math.max(answer, sum);
+            max = Math.max(max, answer[i]);
         }
         
-        return answer;
+        return max;
     }
     
-    private int bfs(int[][] land, int i, int j, int id){
+    private void bfs(int[][] land, int i1, int j1){
+        
+        boolean[] av = new boolean[land[0].length];
         
         Queue<int[]> q = new LinkedList<>();
-        
-        q.offer(new int[]{i, j});
-        idMap[i][j] = id;
-        
-        int n = land.length;
-        int m = land[0].length;
-        
-        int count = 1;
+        q.offer(new int[]{i1, j1});
+        visited[i1][j1] = true;
+        av[j1] = true;
+        int sum = 1;
         
         while(!q.isEmpty()){
-            
             int[] cur = q.poll();
             int x = cur[0];
             int y = cur[1];
             
-            for(int k = 0; k < 4; k++){
-                int nx = x + dx[k];
-                int ny = y + dy[k];
+            for(int i = 0; i < 4; i++){
+                int nx = x + dx[i];
+                int ny = y + dy[i];
                 
-                if(nx >= 0 && nx < n && ny >= 0 && ny < m && land[nx][ny] == 1 && idMap[nx][ny] == 0){
-                    q.offer(new int[]{nx, ny});
-                    idMap[nx][ny] = id;
-                    count++;
-                }
+                if(nx < 0 || nx >= land.length || ny < 0 || ny >= land[0].length) continue;
+                if(visited[nx][ny]) continue;
+                if(land[nx][ny] == 0) continue;
+                
+                q.offer(new int[]{nx, ny});
+                visited[nx][ny] = true;
+                sum++;
+                av[ny] = true;
             }
         }
         
-        
-        return count;
+        for(int i = 0; i < land[0].length; i++){
+            if(av[i]) answer[i] += sum;
+        }
     }
 }
