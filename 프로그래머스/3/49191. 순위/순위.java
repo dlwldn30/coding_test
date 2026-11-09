@@ -1,20 +1,19 @@
 class Solution {
     public int solution(int n, int[][] results) {
         
-        boolean[][] match = new boolean[n+1][n+1];
+        int[][] rank = new int[n+1][n+1];
         
-        for(int i = 0; i < results.length; i++){
-            int a = results[i][0];
-            int b = results[i][1];
-            
-            match[a][b] = true;
+        for(int[] r : results){
+            int a = r[0];
+            int b = r[1];
+            rank[a][b] = 1;
         }
         
         for(int k = 1; k <= n; k++){
             for(int i = 1; i <= n; i++){
                 for(int j = 1; j <= n; j++){
-                    if(match[i][k] && match[k][j])
-                        match[i][j] = true;
+                    if(rank[i][k] == 1 && rank[k][j] == 1)
+                        rank[i][j] = 1;
                 }
             }
         }
@@ -22,16 +21,13 @@ class Solution {
         int answer = 0;
         
         for(int i = 1; i <= n; i++){
-            boolean b = true;
+            int sum = 0;
             for(int j = 1; j <= n; j++){
-                if(i == j) continue;
-                if(!match[i][j] && !match[j][i]){
-                    b = false;
-                    break;
-                }
+                if(rank[i][j] == 1 || rank[j][i] == 1) sum++;
             }
-            if(b) answer++;
+            if(sum == n-1) answer++;
         }
+        
         return answer;
     }
 }
