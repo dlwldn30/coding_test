@@ -6,49 +6,52 @@ class Solution {
     int[] answer = {0,0};
     
     public int[] solution(int[][] users, int[] emoticons) {
-         
-        // 각 이모티콘에 몇퍼센트를 할건지 정해야 함.
+        
         int[] discount = new int[emoticons.length];
-        dfs(users, emoticons, 0, discount);
-            
-            return answer;
+        
+        dfs(users, emoticons, discount, 0); 
+        
+        return answer;
     }
     
-    private void dfs(int[][] users, int[] emoticons, int depth, int[] discount){
+    private void dfs(int[][] users, int[] emoticons, int[] discount, int cur){
         
-        if(depth == emoticons.length){
-            
-            int sub = 0;
+        if(cur == emoticons.length){
+            int plus = 0;
             int money = 0;
             
-            for(int i = 0; i < users.length; i++){ // 사람이 순회
-                int sum = 0;
+            for(int i = 0; i < users.length; i++){
+                int userDiscount = users[i][0];
+                int num = 0;
                 
-                for(int j = 0; j < discount.length; j++){
-                    if(users[i][0] > discount[j]) continue;
+                for(int j = 0; j < cur; j++){
+                    if(discount[j] < userDiscount) continue;
                     
-                    sum += emoticons[j] * (100-discount[j]) / 100;
+                    num += emoticons[j] * (100-discount[j]) / 100;
                 }
-                if(sum >= users[i][1]) sub++;
-                else money += sum;
+                if(num >= users[i][1]){
+                    plus++;
+                }else{
+                    money += num;
+                }
             }
             
-            
-            if(sub > answer[0]){
-                answer[0] = sub;
+            if(answer[0] < plus){
+                answer[0] = plus;
                 answer[1] = money;
-            }else if(sub == answer[0] && money > answer[1]){
-                answer[0] = sub;
+            }else if(answer[0] == plus && answer[1] < money){
                 answer[1] = money;
             }
             
-            return;
+            return ;
         }
+        
         
         
         for(int i = 0; i < 4; i++){
-            discount[depth] = rate[i];
-            dfs(users, emoticons, depth+1, discount);
+            discount[cur] = rate[i];
+            dfs(users, emoticons, discount, cur+1);
         }
+        
     }
 }
