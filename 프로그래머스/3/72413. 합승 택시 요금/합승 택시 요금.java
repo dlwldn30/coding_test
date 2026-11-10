@@ -1,68 +1,46 @@
 import java.util.*;
 
 class Solution {
-
-    List<List<int[]>> graph = new ArrayList<>();
-
     public int solution(int n, int s, int a, int b, int[][] fares) {
-
-        for(int i = 0; i <= n; i++)
-            graph.add(new ArrayList<>());
-
-        for(int[] f : fares){
-            int u = f[0];
-            int v = f[1];
-            int w = f[2];
-
-            graph.get(u).add(new int[]{v,w});
-            graph.get(v).add(new int[]{u,w});
+        // 이러면 같이 가는 게 많아야 함.
+        // start에서 각 지점에 대해 최단 거리 구하기 
+        // 공통 거리에 대해서 어떻게 할 거이냐
+        // 이럴 거면 각 지점과 지점에 대해 최단 거리를 구하자
+        
+        int[][] dist = new int[n+1][n+1];
+        int INF = 1_000_000_000;
+        
+        for (int i = 1; i <= n; i++) {
+            Arrays.fill(dist[i], INF);
+            dist[i][i] = 0;
         }
-
-        int[] distS = dijkstra(n, s);
-        int[] distA = dijkstra(n, a);
-        int[] distB = dijkstra(n, b);
-
-        int answer = Integer.MAX_VALUE;
-
-        for(int i=1;i<=n;i++){
-            answer = Math.min(answer,
-                    distS[i] + distA[i] + distB[i]);
+        
+        for(int i = 0; i < fares.length; i++){
+            int from = fares[i][0];
+            int to = fares[i][1];
+            int w = fares[i][2];
+            
+            dist[from][to] = w;
+            dist[to][from] = w;
         }
-
-        return answer;
-    }
-
-    private int[] dijkstra(int n, int start){
-
-        int[] dist = new int[n+1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
-
-        PriorityQueue<int[]> pq =
-                new PriorityQueue<>((x,y)->x[1]-y[1]);
-
-        pq.offer(new int[]{start,0});
-        dist[start] = 0;
-
-        while(!pq.isEmpty()){
-
-            int[] cur = pq.poll();
-            int node = cur[0];
-            int cost = cur[1];
-
-            if(cost > dist[node]) continue;
-
-            for(int[] next : graph.get(node)){
-
-                int nextNode = next[0];
-                int nextCost = cost + next[1];
-
-                if(nextCost < dist[nextNode]){
-                    dist[nextNode] = nextCost;
-                    pq.offer(new int[]{nextNode,nextCost});
+        
+        for(int k = 1; k <= n; k++){
+            for(int i = 1; i <= n; i++){
+                for(int j = 1; j <= n; j++){
+                    int via = dist[i][k] + dist[k][j];
+                    dist[i][j] = Math.min(dist[i][j], via);
                 }
             }
         }
-
-        return dist;
+        
+        int answer = INF;
+        
+        for(int i = 1; i <= n; i++){
+            if(dist[s][i] == INF || dist[i][a] == INF || dist[i][b] == INF) continue;
+            int cost = dist[s][i] + dist[i][a] + dist[i][b];
+            answer = Math.min(answer, cost);
+        }
+        
+        return answer;
     }
 }
